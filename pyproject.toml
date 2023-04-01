@@ -1,0 +1,31 @@
+[tool.isort]
+profile = "black"
+
+
+[tool.mypy]
+plugins = ["mypy_django_plugin.main", "mypy_drf_plugin.main"]
+strict = true
+strict_optional = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+allow_subclassing_any = true
+allow_untyped_decorators = true
+ignore_missing_imports = true
+
+[tool.django-stubs]
+django_settings_module = "movieswebapp.settings"
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "movieswebapp.settings"
+python_files = ["tests.py","test_*.py","*_tests.py"]
+addopts = ["--reuse-db", "--create-db"]
+
+[tool.pytest-watch]
+nobeep = true
+
+[tool.pytest-django]
+testpaths = "tests/"
+DJANGO_SETTINGS_MODULE = "movieswebapp.settings"
+DJANGO_CONFIGURATION = "Test"
+

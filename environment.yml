@@ -1,0 +1,14 @@
+name: sdi 
+channels:
+  - conda-forge
+dependencies:
+  - python >= 3.8
+  - pip
+  - django
+  - djangorestframework
+  - django-cors-headers
+  - django-stubs
+  - djangorestframework-stubs
+  - pre-commit
+  - pytest
+  - pytest-django

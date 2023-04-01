@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 
 import django_stubs_ext
-from rest_framework import generics
-from rest_framework.generics import GenericAPIView
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +42,7 @@ INSTALLED_APPS = [
     "movieswebapp",
     "corsheaders",
     "rest_framework",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -132,12 +131,27 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
+# REST FRAMEWORK settings
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+
 # Make generics subscriptable to work with mypy and at runtime
 # See: https://github.com/typeddjango/djangorestframework-stubs/issues/255#issuecomment-1320496964
-django_stubs_ext.monkeypatch(
-    extra_classes=(
-        generics.ListCreateAPIView,
-        generics.RetrieveUpdateDestroyAPIView,
-        GenericAPIView,
+# DO NOT move import at module level because it breaks drf_spectacular
+def patch_django_stubs() -> None:
+    from rest_framework import generics
+    from rest_framework.generics import GenericAPIView
+
+    django_stubs_ext.monkeypatch(
+        extra_classes=(
+            generics.ListCreateAPIView,
+            generics.RetrieveUpdateDestroyAPIView,
+            GenericAPIView,
+        )
     )
-)
+
+
+patch_django_stubs()

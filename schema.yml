@@ -1,0 +1,1071 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /actors/:
+    get:
+      operationId: actors_list
+      description: List all Actors or create a new Actor.
+      tags:
+      - actors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Actor'
+          description: ''
+    post:
+      operationId: actors_create
+      description: List all Actors or create a new Actor.
+      tags:
+      - actors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Actor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Actor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Actor'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+          description: ''
+  /actors/{id}/:
+    get:
+      operationId: actors_retrieve
+      description: Retrieve, update or delete an Actor instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - actors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+          description: ''
+    put:
+      operationId: actors_update
+      description: Retrieve, update or delete an Actor instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - actors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Actor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Actor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Actor'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+          description: ''
+    patch:
+      operationId: actors_partial_update
+      description: Retrieve, update or delete an Actor instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - actors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedActor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedActor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedActor'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Actor'
+          description: ''
+    delete:
+      operationId: actors_destroy
+      description: Retrieve, update or delete an Actor instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - actors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /directors/:
+    get:
+      operationId: directors_list
+      description: List all Directors or create a new Director.
+      tags:
+      - directors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Director'
+          description: ''
+    post:
+      operationId: directors_create
+      description: List all Directors or create a new Director.
+      tags:
+      - directors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Director'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Director'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Director'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Director'
+          description: ''
+  /directors/{director_id}/movies:
+    put:
+      operationId: directors_movies_update
+      parameters:
+      - in: path
+        name: director_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - directors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieIds'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MovieIds'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MovieIds'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieIds'
+          description: ''
+    patch:
+      operationId: directors_movies_partial_update
+      parameters:
+      - in: path
+        name: director_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - directors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMovieIds'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMovieIds'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMovieIds'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieIds'
+          description: ''
+  /directors/{id}/:
+    get:
+      operationId: directors_retrieve
+      description: Retrieve, update or delete a Director instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - directors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleDirector'
+          description: ''
+    put:
+      operationId: directors_update
+      description: Retrieve, update or delete a Director instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - directors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SingleDirector'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SingleDirector'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SingleDirector'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleDirector'
+          description: ''
+    patch:
+      operationId: directors_partial_update
+      description: Retrieve, update or delete a Director instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - directors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSingleDirector'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSingleDirector'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSingleDirector'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleDirector'
+          description: ''
+    delete:
+      operationId: directors_destroy
+      description: Retrieve, update or delete a Director instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - directors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /directors/by_last_release_date/:
+    get:
+      operationId: directors_by_last_release_date_list
+      tags:
+      - directors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DirectorSerializerWithLastReleaseDate'
+          description: ''
+  /movies/:
+    get:
+      operationId: movies_list
+      description: List all Movies or create a new Movie.
+      tags:
+      - movies
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+          description: ''
+    post:
+      operationId: movies_create
+      description: List all Movies or create a new Movie.
+      tags:
+      - movies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+  /movies/{movie_id}/actors/:
+    get:
+      operationId: movies_actors_list
+      parameters:
+      - in: path
+        name: movie_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - movies
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActorMovie'
+          description: ''
+    post:
+      operationId: movies_actors_create
+      parameters:
+      - in: path
+        name: movie_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - movies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActorMovie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ActorMovie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ActorMovie'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorMovie'
+          description: ''
+  /movies/{movie_id}/actors/{actor_id}/:
+    get:
+      operationId: movies_actors_retrieve
+      parameters:
+      - in: path
+        name: actor_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: movie_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - movies
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorMovie'
+          description: ''
+    put:
+      operationId: movies_actors_update
+      parameters:
+      - in: path
+        name: actor_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: movie_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - movies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActorMovie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ActorMovie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ActorMovie'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorMovie'
+          description: ''
+    patch:
+      operationId: movies_actors_partial_update
+      parameters:
+      - in: path
+        name: actor_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: movie_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - movies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedActorMovie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedActorMovie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedActorMovie'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorMovie'
+          description: ''
+    delete:
+      operationId: movies_actors_destroy
+      parameters:
+      - in: path
+        name: actor_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: movie_id
+        schema:
+          type: string
+          pattern: ^\d+$
+        required: true
+      tags:
+      - movies
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /movies/{id}/:
+    get:
+      operationId: movies_retrieve
+      description: Retrieve, update or delete a Movie instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - movies
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+    put:
+      operationId: movies_update
+      description: Retrieve, update or delete a Movie instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - movies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+    patch:
+      operationId: movies_partial_update
+      description: Retrieve, update or delete a Movie instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - movies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMovie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMovie'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMovie'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+    delete:
+      operationId: movies_destroy
+      description: Retrieve, update or delete a Movie instance.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - movies
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /movies/by_average_age_of_actors/:
+    get:
+      operationId: movies_by_average_age_of_actors_list
+      tags:
+      - movies
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieSerializerWithAverageAge'
+          description: ''
+components:
+  schemas:
+    Actor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        alternative_name:
+          type: string
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+        birthplace:
+          type: string
+          maxLength: 100
+        height_in_cm:
+          type: integer
+      required:
+      - birthplace
+      - date_of_birth
+      - height_in_cm
+      - id
+      - name
+    ActorMovie:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        screen_time_in_minutes:
+          type: integer
+        salary_in_usd:
+          type: integer
+        actor:
+          type: integer
+        movie:
+          type: integer
+      required:
+      - actor
+      - id
+      - movie
+      - salary_in_usd
+      - screen_time_in_minutes
+    Director:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        alternative_name:
+          type: string
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+        birthplace:
+          type: string
+          maxLength: 100
+        height_in_cm:
+          type: integer
+      required:
+      - birthplace
+      - date_of_birth
+      - height_in_cm
+      - id
+      - name
+    DirectorSerializerWithLastReleaseDate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        alternative_name:
+          type: string
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+        birthplace:
+          type: string
+          maxLength: 100
+        height_in_cm:
+          type: integer
+        last_movie_release_date:
+          type: integer
+      required:
+      - birthplace
+      - date_of_birth
+      - height_in_cm
+      - id
+      - last_movie_release_date
+      - name
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        rating:
+          type: number
+          format: double
+        release_date:
+          type: string
+          format: date
+        length_in_minutes:
+          type: integer
+        director:
+          type: integer
+        actors:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+      required:
+      - actors
+      - director
+      - id
+      - length_in_minutes
+      - name
+      - rating
+      - release_date
+    MovieIds:
+      type: object
+      properties:
+        movie_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - movie_ids
+    MovieSerializerWithAverageAge:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        rating:
+          type: number
+          format: double
+        release_date:
+          type: string
+          format: date
+        length_in_minutes:
+          type: integer
+        director:
+          type: integer
+        actors:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        average_age:
+          type: number
+          format: double
+      required:
+      - actors
+      - average_age
+      - director
+      - id
+      - length_in_minutes
+      - name
+      - rating
+      - release_date
+    PatchedActor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        alternative_name:
+          type: string
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+        birthplace:
+          type: string
+          maxLength: 100
+        height_in_cm:
+          type: integer
+    PatchedActorMovie:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        screen_time_in_minutes:
+          type: integer
+        salary_in_usd:
+          type: integer
+        actor:
+          type: integer
+        movie:
+          type: integer
+    PatchedMovie:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        rating:
+          type: number
+          format: double
+        release_date:
+          type: string
+          format: date
+        length_in_minutes:
+          type: integer
+        director:
+          type: integer
+        actors:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+    PatchedMovieIds:
+      type: object
+      properties:
+        movie_ids:
+          type: array
+          items:
+            type: integer
+    PatchedSingleDirector:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        alternative_name:
+          type: string
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+        birthplace:
+          type: string
+          maxLength: 100
+        height_in_cm:
+          type: integer
+        movies:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+    SingleDirector:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        alternative_name:
+          type: string
+          maxLength: 100
+        date_of_birth:
+          type: string
+          format: date
+        birthplace:
+          type: string
+          maxLength: 100
+        height_in_cm:
+          type: integer
+        movies:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+      required:
+      - birthplace
+      - date_of_birth
+      - height_in_cm
+      - id
+      - movies
+      - name
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

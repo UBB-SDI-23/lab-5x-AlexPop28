@@ -9,6 +9,7 @@ dependencies:
   - django-cors-headers
   - django-stubs
   - djangorestframework-stubs
+  - drf-spectacular
   - pre-commit
   - pytest
   - pytest-django

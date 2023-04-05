@@ -43,6 +43,10 @@ class DirectorSerializer(serializers.ModelSerializer[Director]):
         fields = "__all__"
 
 
+class SingleMovieSerializer(MovieSerializer):
+    director = DirectorSerializer()
+
+
 class SingleDirectorSerializer(DirectorSerializer):
     movies = serializers.SerializerMethodField("get_movies")
 

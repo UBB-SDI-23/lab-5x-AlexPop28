@@ -13,6 +13,7 @@ from movieswebapp.moviesapp.serializers import (
     ActorMovieSerializer,
     MovieSerializer,
     MovieSerializerWithAverageAge,
+    SingleMovieSerializer,
 )
 
 
@@ -41,7 +42,7 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView[Movie]):
     """
 
     queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
+    serializer_class = SingleMovieSerializer
 
 
 class MoviesOrderedByAverageAgeOfActors(generics.ListAPIView[Movie]):

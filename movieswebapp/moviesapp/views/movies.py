@@ -42,7 +42,11 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView[Movie]):
     """
 
     queryset = Movie.objects.all()
-    serializer_class = SingleMovieSerializer
+
+    def get_serializer_class(self) -> type[MovieSerializer | SingleMovieSerializer]:
+        if self.request.method == "PUT":
+            return MovieSerializer
+        return SingleMovieSerializer
 
 
 class MoviesOrderedByAverageAgeOfActors(generics.ListAPIView[Movie]):

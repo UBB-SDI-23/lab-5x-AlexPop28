@@ -13,3 +13,5 @@ dependencies:
   - pre-commit
   - pytest
   - pytest-django
+  - psycopg2
+  - python-dotenv

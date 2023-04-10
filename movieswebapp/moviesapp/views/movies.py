@@ -15,6 +15,7 @@ from movieswebapp.moviesapp.serializers import (
     MovieSerializerWithAverageAge,
     SingleMovieSerializer,
 )
+from movieswebapp.moviesapp.views.pagination import CustomPagination
 
 
 class MovieList(generics.ListCreateAPIView[Movie]):
@@ -23,6 +24,7 @@ class MovieList(generics.ListCreateAPIView[Movie]):
     """
 
     serializer_class = MovieSerializer
+    pagination_class = CustomPagination
 
     def get_queryset(self) -> QuerySet[Movie]:
         """
@@ -56,6 +58,7 @@ class MoviesOrderedByAverageAgeOfActors(generics.ListAPIView[Movie]):
         )
     ).order_by("average_age")
     serializer_class = MovieSerializerWithAverageAge
+    pagination_class = CustomPagination
 
 
 class ActorMovieViewSet(
@@ -66,6 +69,7 @@ class ActorMovieViewSet(
 ):
     serializer_class = ActorMovieSerializer
     queryset = ActorMovie.objects.all()
+    pagination_class = CustomPagination
 
     lookup_field = "actor_id"
 
@@ -92,6 +96,13 @@ class ActorMovieViewSet(
     def list(self, request: Request, movie_id: int) -> Response:
         get_object_or_404(Movie.objects.all(), id=movie_id)
         actor_movies = ActorMovie.objects.filter(movie=movie_id)
+
+        # Use pagination class to paginate the queryset
+        page = self.paginate_queryset(actor_movies)
+        if page is not None:
+            serializer = ActorMovieSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         serializer = ActorMovieSerializer(actor_movies, many=True)
         return Response(serializer.data)
 

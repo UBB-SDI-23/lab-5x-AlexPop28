@@ -13,6 +13,7 @@ from movieswebapp.moviesapp.serializers import (
     MovieIdsSerializer,
     SingleDirectorSerializer,
 )
+from movieswebapp.moviesapp.views.pagination import CustomPagination
 
 
 class DirectorList(generics.ListCreateAPIView[Director]):
@@ -22,6 +23,7 @@ class DirectorList(generics.ListCreateAPIView[Director]):
 
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
+    pagination_class = CustomPagination
 
 
 class DirectorDetail(generics.RetrieveUpdateDestroyAPIView[Director]):
@@ -38,6 +40,7 @@ class DirectorsOrderedByLatestMovie(generics.ListAPIView[Director]):
         last_movie_release_date=Max(ExtractYear("movie__release_date"))
     ).order_by("-last_movie_release_date")
     serializer_class = DirectorSerializerWithLastReleaseDate
+    pagination_class = CustomPagination
 
 
 class DirectorAddMovies(generics.UpdateAPIView[Movie]):

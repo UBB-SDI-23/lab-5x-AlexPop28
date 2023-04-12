@@ -2,6 +2,7 @@ from rest_framework import generics
 
 from movieswebapp.moviesapp.models import Actor
 from movieswebapp.moviesapp.serializers import ActorSerializer
+from movieswebapp.moviesapp.views.pagination import CustomPagination
 
 
 class ActorList(generics.ListCreateAPIView[Actor]):
@@ -11,6 +12,7 @@ class ActorList(generics.ListCreateAPIView[Actor]):
 
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+    pagination_class = CustomPagination
 
 
 class ActorDetail(generics.RetrieveUpdateDestroyAPIView[Actor]):

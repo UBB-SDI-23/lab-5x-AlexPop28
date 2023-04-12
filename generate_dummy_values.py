@@ -65,47 +65,45 @@ def get_actormovie() -> list[str]:
         screen_time_in_minutes = fake.random_int(5, 100)
         salary = fake.random_int(BATCH_SIZE, 100_000_000)
         actor_movie = (
-            f"({i}, {actor_id}, {movie_id}, {screen_time_in_minutes}, {salary})"
+            f"({i}, {screen_time_in_minutes}, {actor_id}, {movie_id}, {salary})"
         )
         actor_movies.append(actor_movie)
     return actor_movies
 
 
 def main() -> None:
-    with open("gen.sql", "w") as f:
+    with open("gen_actormovie.sql", "w") as f:
         # Insert Actors
-        f.write(
-            "INSERT INTO public.movieswebapp_actor (id, name, alternative_name, date_of_birth, birthplace, height_in_cm) VALUES "
-        )
         actors = get_actors()
         for i in range(0, len(actors), BATCH_SIZE):
+            f.write(
+                "INSERT INTO public.movieswebapp_actor (id, name, alternative_name, date_of_birth, birthplace, height_in_cm) VALUES "
+            )
             f.write(",\n".join(actors[i : i + BATCH_SIZE]))
             f.write(";\n\n")
 
         # Insert Directors
-        f.write(
-            "INSERT INTO public.movieswebapp_director (id, name, alternative_name, date_of_birth, birthplace, height_in_cm) VALUES "
-        )
         directors = get_directors()
         for i in range(0, len(directors), BATCH_SIZE):
+            f.write(
+                "INSERT INTO public.movieswebapp_director (id, name, alternative_name, date_of_birth, birthplace, height_in_cm) VALUES "
+            )
             f.write(",\n".join(directors[i : i + BATCH_SIZE]))
             f.write(";\n\n")
 
         # Insert Movies
-        f.write(
-            "INSERT INTO public.movieswebapp_movie (id, name, rating, release_date, length_in_minutes, director_id) VALUES "
-        )
         movies = get_movies()
         for i in range(0, len(movies), BATCH_SIZE):
+            f.write(
+                "INSERT INTO public.movieswebapp_movie (id, name, rating, release_date, length_in_minutes, director_id) VALUES "
+            )
             f.write(",\n".join(movies[i : i + BATCH_SIZE]))
             f.write(";\n\n")
 
         # Insert ActorMovie
-        f.write(
-            "INSERT INTO public.movieswebapp_actormovie (id, actor_id, movie_id, screen_time_in_minutes, salary_in_usd) VALUES "
-        )
         actors_movies = get_actormovie()
         for i in range(0, len(actors_movies), BATCH_SIZE):
+            f.write("INSERT INTO public.movieswebapp_actormovie VALUES ")
             f.write(",\n".join(actors_movies[i : i + BATCH_SIZE]))
             f.write(";\n\n")
 

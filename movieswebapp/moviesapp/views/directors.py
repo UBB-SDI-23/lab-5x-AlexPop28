@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import Max
+from django.db.models import Max, QuerySet
 from django.db.models.functions import ExtractYear
 from rest_framework import generics, status
 from rest_framework.request import Request
@@ -24,6 +24,13 @@ class DirectorList(generics.ListCreateAPIView[Director]):
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
     pagination_class = CustomPagination
+
+    def get_queryset(self) -> QuerySet[Director]:
+        name = self.request.query_params.get("name")
+        queryset = Director.objects.all()
+        if name is not None:
+            queryset = queryset.filter(name__icontains=name)
+        return queryset
 
 
 class DirectorDetail(generics.RetrieveUpdateDestroyAPIView[Director]):

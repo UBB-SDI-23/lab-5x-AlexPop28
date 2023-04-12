@@ -40,6 +40,7 @@ class ActorMovie(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     screen_time_in_minutes = models.IntegerField()
     salary_in_usd = models.IntegerField()
+    character_name = models.CharField(max_length=100)
 
     class Meta:
         unique_together = (("actor", "movie"),)

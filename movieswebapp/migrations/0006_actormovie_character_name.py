@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movieswebapp', '0005_alter_actor_alternative_name_and_more'),
+        ("movieswebapp", "0005_alter_actor_alternative_name_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='actormovie',
-            name='character_name',
-            field=models.CharField(default='', max_length=100),
+            model_name="actormovie",
+            name="character_name",
+            field=models.CharField(default="", max_length=100),
             preserve_default=False,
         ),
     ]

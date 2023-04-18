@@ -13,7 +13,7 @@ class Person(models.Model):
 
     class Meta:
         abstract = True
-        ordering = "name"
+        ordering = ["name"]
 
 
 class Actor(Person):
@@ -33,7 +33,7 @@ class Movie(models.Model):
     actors = models.ManyToManyField(Actor, through="ActorMovie")
 
     class Meta:
-        ordering = "name"
+        ordering = ["name"]
 
     def __str__(self) -> str:
         return self.name
@@ -48,4 +48,4 @@ class ActorMovie(models.Model):
 
     class Meta:
         unique_together = (("actor", "movie"),)
-        ordering = "id"
+        ordering = ["id"]

@@ -18,7 +18,8 @@ class Person(models.Model):
 
 
 class Actor(Person):
-    pass
+    class Meta(Person.Meta):
+        indexes = [models.Index(fields=["date_of_birth"])]
 
 
 class Director(Person):

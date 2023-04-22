@@ -74,16 +74,16 @@ class ActorMovieViewSet(
     lookup_field = "actor_id"
 
     def create(
-        self, request: Request, movie_id: int, *args: Any, **kwargs: Any
+        self, request: Request, movie_id: str, *args: Any, **kwargs: Any
     ) -> Response:
         # Check that if a `movie` parameter was passed, it matches the movie_id from the route.
         data = request.data.copy()
-        if data.get("movie", movie_id) != movie_id:
+        if data.get("movie", movie_id) != int(movie_id):
             return Response(
                 {"message": "Bad request format. Movie does not match id from route."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        data["movie"] = movie_id
+        data["movie"] = int(movie_id)
 
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -93,7 +93,7 @@ class ActorMovieViewSet(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
 
-    def list(self, request: Request, movie_id: int) -> Response:
+    def list(self, request: Request, movie_id: str) -> Response:
         get_object_or_404(Movie.objects.all(), id=movie_id)
         actor_movies = ActorMovie.objects.filter(movie=movie_id)
 

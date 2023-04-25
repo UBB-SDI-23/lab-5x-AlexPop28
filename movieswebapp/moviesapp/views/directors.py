@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import Max, QuerySet
+from django.db.models import Count, Max, QuerySet
 from django.db.models.functions import ExtractYear
 from rest_framework import generics, status
 from rest_framework.request import Request
@@ -8,8 +8,8 @@ from rest_framework.response import Response
 
 from movieswebapp.moviesapp.models import Director, Movie
 from movieswebapp.moviesapp.serializers import (
-    DirectorSerializer,
     DirectorSerializerWithLastReleaseDate,
+    DirectorSerializerWithMovieCount,
     MovieIdsSerializer,
     SingleDirectorSerializer,
 )
@@ -22,7 +22,7 @@ class DirectorList(generics.ListCreateAPIView[Director]):
     """
 
     queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
+    serializer_class = DirectorSerializerWithMovieCount
     pagination_class = CustomPagination
 
     def get_queryset(self) -> QuerySet[Director]:
@@ -30,6 +30,7 @@ class DirectorList(generics.ListCreateAPIView[Director]):
         queryset = Director.objects.all()
         if name is not None:
             queryset = queryset.filter(name__icontains=name)
+        queryset = queryset.annotate(movie_count=Count("movie")).order_by("name", "id")
         return queryset
 
 

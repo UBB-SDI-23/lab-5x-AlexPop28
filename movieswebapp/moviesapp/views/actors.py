@@ -1,4 +1,3 @@
-from django.db.models import Count
 from rest_framework import generics
 
 from movieswebapp.moviesapp.models import Actor
@@ -14,9 +13,7 @@ class ActorList(generics.ListCreateAPIView[Actor]):
     List all Actors or create a new Actor.
     """
 
-    queryset = (
-        Actor.objects.all().annotate(movie_count=Count("movie")).order_by("name", "id")
-    )
+    queryset = Actor.objects.all()
     serializer_class = ActorSerializerWithMovieCount
     pagination_class = CustomPagination
 

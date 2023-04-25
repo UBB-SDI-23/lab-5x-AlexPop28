@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import Avg, QuerySet
+from django.db.models import Avg, Count, QuerySet
 from django.db.models.functions import ExtractYear
 from rest_framework import generics, mixins, status, viewsets
 from rest_framework.generics import get_object_or_404
@@ -12,6 +12,7 @@ from movieswebapp.moviesapp.models import ActorMovie, Movie
 from movieswebapp.moviesapp.serializers import (
     ActorMovieSerializer,
     MovieSerializer,
+    MovieSerializerWithActorCount,
     MovieSerializerWithAverageAge,
     SingleMovieSerializer,
 )
@@ -23,7 +24,7 @@ class MovieList(generics.ListCreateAPIView[Movie]):
     List all Movies or create a new Movie.
     """
 
-    serializer_class = MovieSerializer
+    serializer_class = MovieSerializerWithActorCount
     pagination_class = CustomPagination
 
     def get_queryset(self) -> QuerySet[Movie]:
@@ -35,6 +36,7 @@ class MovieList(generics.ListCreateAPIView[Movie]):
         min_rating = self.request.query_params.get("min_rating")
         if min_rating is not None:
             queryset = queryset.filter(rating__gte=min_rating)
+        queryset = queryset.annotate(actor_count=Count("actors"))
         return queryset
 
 

@@ -12,14 +12,6 @@ class MovieSerializer(serializers.ModelSerializer[Movie]):
 
     class Meta:
         model = Movie
-        fields = "__all__"
-
-
-class MovieSerializerWithAverageAge(MovieSerializer):
-    average_age = serializers.FloatField()
-
-    class Meta:
-        model = Movie
         fields = (
             "id",
             "name",
@@ -27,9 +19,23 @@ class MovieSerializerWithAverageAge(MovieSerializer):
             "release_date",
             "length_in_minutes",
             "director",
-            "actors",
-            "average_age",
         )
+
+
+class MovieSerializerWithActorCount(MovieSerializer):
+    actor_count = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = Movie
+        fields = MovieSerializer.Meta.fields + ("actor_count",)
+
+
+class MovieSerializerWithAverageAge(MovieSerializer):
+    average_age = serializers.FloatField()
+
+    class Meta:
+        model = Movie
+        fields = MovieSerializer.Meta.fields + ("average_age",)
 
 
 class DirectorSerializer(serializers.ModelSerializer[Director]):

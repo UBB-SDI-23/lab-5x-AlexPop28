@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import Count, Max, QuerySet
+from django.db.models import Count, F, Max, QuerySet
 from django.db.models.functions import ExtractYear
 from rest_framework import generics, status
 from rest_framework.request import Request
@@ -46,7 +46,7 @@ class DirectorDetail(generics.RetrieveUpdateDestroyAPIView[Director]):
 class DirectorsOrderedByLatestMovie(generics.ListAPIView[Director]):
     queryset = Director.objects.annotate(
         last_movie_release_date=Max(ExtractYear("movie__release_date"))
-    ).order_by("-last_movie_release_date")
+    ).order_by(F("last_movie_release_date").desc(nulls_last=True))
     serializer_class = DirectorSerializerWithLastReleaseDate
     pagination_class = CustomPagination
 

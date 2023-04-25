@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 
 from .models import Actor, ActorMovie, Director, Movie
+from .validations import check_date_in_the_past
 
 
 class MovieSerializer(serializers.ModelSerializer[Movie]):
@@ -9,6 +10,11 @@ class MovieSerializer(serializers.ModelSerializer[Movie]):
         if rating < 0 or rating > 10.0:
             raise serializers.ValidationError("Rating should be between 0 and 10.")
         return rating
+
+    def validate_release_date(self, release_date: str) -> str:
+        if not check_date_in_the_past(release_date):
+            raise serializers.ValidationError("Release date should be in the past.")
+        return release_date
 
     class Meta:
         model = Movie
@@ -43,6 +49,11 @@ class DirectorSerializer(serializers.ModelSerializer[Director]):
         if height_in_cm <= 0:
             raise serializers.ValidationError("Height should be positive.")
         return height_in_cm
+
+    def validate_date_of_birth(self, date_of_birth: str) -> str:
+        if not check_date_in_the_past(date_of_birth):
+            raise serializers.ValidationError("Date of birth should be in the past.")
+        return date_of_birth
 
     class Meta:
         model = Director
@@ -94,6 +105,11 @@ class ActorSerializer(serializers.ModelSerializer[Actor]):
         if height_in_cm <= 0:
             raise serializers.ValidationError("Height should be positive.")
         return height_in_cm
+
+    def validate_date_of_birth(self, date_of_birth: str) -> str:
+        if not check_date_in_the_past(date_of_birth):
+            raise serializers.ValidationError("Date of birth should be in the past.")
+        return date_of_birth
 
     class Meta:
         model = Actor

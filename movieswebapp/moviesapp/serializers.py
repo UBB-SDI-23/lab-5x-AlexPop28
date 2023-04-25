@@ -68,21 +68,25 @@ class SingleDirectorSerializer(DirectorSerializer):
             Movie.objects.all().filter(director=obj.id), many=True  # type: ignore
         ).data
 
+    class Meta:
+        model = Director
+        fields = DirectorSerializer.Meta.fields + ("movies",)
+
 
 class DirectorSerializerWithLastReleaseDate(DirectorSerializer):
     last_movie_release_date = serializers.IntegerField()
 
     class Meta:
         model = Director
-        fields = [
-            "id",
-            "name",
-            "alternative_name",
-            "date_of_birth",
-            "birthplace",
-            "height_in_cm",
-            "last_movie_release_date",
-        ]
+        fields = DirectorSerializer.Meta.fields + ("last_movie_release_date",)
+
+
+class DirectorSerializerWithMovieCount(DirectorSerializer):
+    movie_count = serializers.IntegerField()
+
+    class Meta:
+        model = Director
+        fields = DirectorSerializer.Meta.fields + ("movie_count",)
 
 
 class ActorSerializer(serializers.ModelSerializer[Actor]):

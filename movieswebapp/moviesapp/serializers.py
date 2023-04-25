@@ -46,7 +46,14 @@ class DirectorSerializer(serializers.ModelSerializer[Director]):
 
     class Meta:
         model = Director
-        fields = "__all__"
+        fields = (
+            "id",
+            "name",
+            "alternative_name",
+            "date_of_birth",
+            "birthplace",
+            "height_in_cm",
+        )
 
 
 class SingleMovieSerializer(MovieSerializer):
@@ -56,23 +63,10 @@ class SingleMovieSerializer(MovieSerializer):
 class SingleDirectorSerializer(DirectorSerializer):
     movies = serializers.SerializerMethodField("get_movies")
 
-    def get_movies(self, obj: Director) -> list[ReturnDict]:
-        return [
-            MovieSerializer(movie).data
-            for movie in Movie.objects.all().filter(director=obj.id)  # type: ignore
-        ]
-
-    class Meta:
-        model = Director
-        fields = [
-            "id",
-            "name",
-            "alternative_name",
-            "date_of_birth",
-            "birthplace",
-            "height_in_cm",
-            "movies",
-        ]
+    def get_movies(self, obj: Director) -> ReturnDict:
+        return MovieSerializer(
+            Movie.objects.all().filter(director=obj.id), many=True  # type: ignore
+        ).data
 
 
 class DirectorSerializerWithLastReleaseDate(DirectorSerializer):

@@ -36,7 +36,7 @@ class MovieList(generics.ListCreateAPIView[Movie]):
         min_rating = self.request.query_params.get("min_rating")
         if min_rating is not None:
             queryset = queryset.filter(rating__gte=min_rating)
-        queryset = queryset.annotate(actor_count=Count("actors"))
+        queryset = queryset.annotate(actor_count=Count("actors")).order_by("name", "id")
         return queryset
 
 

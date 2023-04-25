@@ -14,7 +14,9 @@ class ActorList(generics.ListCreateAPIView[Actor]):
     List all Actors or create a new Actor.
     """
 
-    queryset = Actor.objects.all().annotate(movie_count=Count("movie"))
+    queryset = (
+        Actor.objects.all().annotate(movie_count=Count("movie")).order_by("name", "id")
+    )
     serializer_class = ActorSerializerWithMovieCount
     pagination_class = CustomPagination
 

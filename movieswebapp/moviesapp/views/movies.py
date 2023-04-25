@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import Avg, Count, QuerySet
+from django.db.models import Avg, QuerySet
 from django.db.models.functions import ExtractYear
 from rest_framework import generics, mixins, status, viewsets
 from rest_framework.generics import get_object_or_404
@@ -36,7 +36,6 @@ class MovieList(generics.ListCreateAPIView[Movie]):
         min_rating = self.request.query_params.get("min_rating")
         if min_rating is not None:
             queryset = queryset.filter(rating__gte=min_rating)
-        queryset = queryset.annotate(actor_count=Count("actors")).order_by("name", "id")
         return queryset
 
 

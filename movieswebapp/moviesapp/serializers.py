@@ -29,7 +29,10 @@ class MovieSerializer(serializers.ModelSerializer[Movie]):
 
 
 class MovieSerializerWithActorCount(MovieSerializer):
-    actor_count = serializers.IntegerField(required=False)
+    actor_count = serializers.SerializerMethodField()
+
+    def get_actor_count(self, movie: Movie) -> int:
+        return ActorMovie.objects.filter(movie=movie.id).count()  # type: ignore
 
     class Meta:
         model = Movie

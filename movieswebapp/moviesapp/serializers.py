@@ -99,7 +99,22 @@ class ActorSerializer(serializers.ModelSerializer[Actor]):
 
     class Meta:
         model = Actor
-        fields = "__all__"
+        fields = (
+            "id",
+            "name",
+            "alternative_name",
+            "date_of_birth",
+            "birthplace",
+            "height_in_cm",
+        )
+
+
+class ActorSerializerWithMovieCount(ActorSerializer):
+    movie_count = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = Actor
+        fields = ActorSerializer.Meta.fields + ("movie_count",)
 
 
 class ActorMovieSerializer(serializers.ModelSerializer[ActorMovie]):

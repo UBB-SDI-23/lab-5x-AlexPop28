@@ -1,6 +1,6 @@
 from typing import Any
 
-from django.db.models import Count, F, Max, QuerySet
+from django.db.models import F, Max, QuerySet
 from django.db.models.functions import ExtractYear
 from rest_framework import generics, status
 from rest_framework.request import Request
@@ -30,7 +30,6 @@ class DirectorList(generics.ListCreateAPIView[Director]):
         queryset = Director.objects.all()
         if name is not None:
             queryset = queryset.filter(name__icontains=name)
-        queryset = queryset.annotate(movie_count=Count("movie")).order_by("name", "id")
         return queryset
 
 

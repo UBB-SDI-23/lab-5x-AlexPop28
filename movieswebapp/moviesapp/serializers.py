@@ -96,7 +96,10 @@ class DirectorSerializerWithLastReleaseDate(DirectorSerializer):
 
 
 class DirectorSerializerWithMovieCount(DirectorSerializer):
-    movie_count = serializers.IntegerField()
+    movie_count = serializers.SerializerMethodField()
+
+    def get_movie_count(self, director: Director) -> int:
+        return Movie.objects.filter(director=director.id).count()  # type: ignore
 
     class Meta:
         model = Director

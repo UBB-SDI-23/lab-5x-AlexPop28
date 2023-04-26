@@ -1,3 +1,5 @@
+from typing import cast
+
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 
@@ -156,7 +158,24 @@ class ActorMovieSerializer(serializers.ModelSerializer[ActorMovie]):
 
     class Meta:
         model = ActorMovie
-        fields = "__all__"
+        fields = (
+            "actor",
+            "movie",
+            "screen_time_in_minutes",
+            "salary_in_usd",
+            "character_name",
+        )
+
+
+class ActorMovieSerializerWithActorName(ActorMovieSerializer):
+    actor_name = serializers.SerializerMethodField()
+
+    def get_actor_name(self, actor_movie: ActorMovie) -> str:
+        return cast(str, actor_movie.actor.name)
+
+    class Meta:
+        model = ActorMovie
+        fields = ActorMovieSerializer.Meta.fields + ("actor_name",)
 
 
 class MovieIdsSerializer(serializers.Serializer[list[int]]):

@@ -11,6 +11,7 @@ from rest_framework.settings import api_settings
 from movieswebapp.moviesapp.models import ActorMovie, Movie
 from movieswebapp.moviesapp.serializers import (
     ActorMovieSerializer,
+    ActorMovieSerializerWithActorName,
     MovieSerializer,
     MovieSerializerWithActorCount,
     MovieSerializerWithAverageAge,
@@ -101,10 +102,10 @@ class ActorMovieViewSet(
         # Use pagination class to paginate the queryset
         page = self.paginate_queryset(actor_movies)
         if page is not None:
-            serializer = ActorMovieSerializer(page, many=True)
+            serializer = ActorMovieSerializerWithActorName(page, many=True)
             return self.get_paginated_response(serializer.data)
 
-        serializer = ActorMovieSerializer(actor_movies, many=True)
+        serializer = ActorMovieSerializerWithActorName(actor_movies, many=True)
         return Response(serializer.data)
 
     @staticmethod

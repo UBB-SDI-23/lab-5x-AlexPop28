@@ -1,3 +1,4 @@
+import datetime
 from typing import cast
 
 from rest_framework import serializers
@@ -13,7 +14,7 @@ class MovieSerializer(serializers.ModelSerializer[Movie]):
             raise serializers.ValidationError("Rating should be between 0 and 10.")
         return rating
 
-    def validate_release_date(self, release_date: str) -> str:
+    def validate_release_date(self, release_date: datetime.date) -> datetime.date:
         if not check_date_in_the_past(release_date):
             raise serializers.ValidationError("Release date should be in the past.")
         return release_date
@@ -55,7 +56,7 @@ class DirectorSerializer(serializers.ModelSerializer[Director]):
             raise serializers.ValidationError("Height should be positive.")
         return height_in_cm
 
-    def validate_date_of_birth(self, date_of_birth: str) -> str:
+    def validate_date_of_birth(self, date_of_birth: datetime.date) -> datetime.date:
         if not check_date_in_the_past(date_of_birth):
             raise serializers.ValidationError("Date of birth should be in the past.")
         return date_of_birth
@@ -114,7 +115,7 @@ class ActorSerializer(serializers.ModelSerializer[Actor]):
             raise serializers.ValidationError("Height should be positive.")
         return height_in_cm
 
-    def validate_date_of_birth(self, date_of_birth: str) -> str:
+    def validate_date_of_birth(self, date_of_birth: datetime.date) -> datetime.date:
         if not check_date_in_the_past(date_of_birth):
             raise serializers.ValidationError("Date of birth should be in the past.")
         return date_of_birth

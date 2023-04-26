@@ -140,6 +140,14 @@ class ActorSerializerWithMovieCount(ActorSerializer):
         fields = ActorSerializer.Meta.fields + ("movie_count",)
 
 
+class ActorSerializerWithTotalIncome(ActorSerializer):
+    total_income = serializers.IntegerField()
+
+    class Meta:
+        model = Actor
+        fields = ActorSerializer.Meta.fields + ("total_income",)
+
+
 class ActorMovieSerializer(serializers.ModelSerializer[ActorMovie]):
     def validate_screen_time_in_minutes(self, screen_time_in_minutes: int) -> int:
         if screen_time_in_minutes <= 0:

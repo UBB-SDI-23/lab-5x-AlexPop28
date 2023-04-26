@@ -24,6 +24,10 @@ urlpatterns = [
     path("actors/", views.actors.ActorList.as_view()),
     path("actors/<int:pk>/", views.actors.ActorDetail.as_view()),
     path(
+        "actors/by_total_income/",
+        views.actors.ActorsOrderedByTotalIncome.as_view(),
+    ),
+    path(
         "movies/by_average_age_of_actors/",
         views.movies.MoviesOrderedByAverageAgeOfActors.as_view(),
     ),

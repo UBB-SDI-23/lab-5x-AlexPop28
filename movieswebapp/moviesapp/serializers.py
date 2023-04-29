@@ -1,10 +1,12 @@
 import datetime
-from typing import cast
+from collections import OrderedDict
+from typing import Any, cast
 
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 
-from .models import Actor, ActorMovie, Director, Movie
+from .models import Actor, ActorMovie, Director, Movie, UserProfile
 from .validations import check_date_in_the_past
 
 
@@ -181,3 +183,35 @@ class ActorMovieSerializerWithActorName(ActorMovieSerializer):
 
 class MovieIdsSerializer(serializers.Serializer[list[int]]):
     movie_ids = serializers.ListField(child=serializers.IntegerField())
+
+
+class UserSerializer(serializers.ModelSerializer[User]):
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "password",
+        )
+
+
+class UserProfileSerializer(serializers.ModelSerializer[UserProfile]):
+    user = UserSerializer()
+
+    class Meta:
+        model = UserProfile
+        fields = (
+            "user",
+            "bio",
+            "location",
+            "birthday",
+            "gender",
+            "validation_code",
+            "validation_expiry_date",
+            "active",
+        )
+
+    def create(self, validated_data: OrderedDict[str, Any]) -> UserProfile:
+        user_data = validated_data.pop("user")
+        user = User.objects.create_user(**user_data)
+        user_profile = UserProfile.objects.create(user=user, **validated_data)
+        return user_profile

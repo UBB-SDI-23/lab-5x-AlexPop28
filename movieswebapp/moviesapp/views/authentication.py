@@ -20,11 +20,11 @@ class UserRegistrationView(generics.CreateAPIView[UserProfile]):
     serializer_class = UserProfileSerializer
 
     def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        validation_expiry_date = str(timezone.now() + timedelta(minutes=10))
-        validation_code = str(uuid.uuid4())
+        activation_expiry_date = str(timezone.now() + timedelta(minutes=10))
+        activation_code = str(uuid.uuid4())
         data = request.data.copy()
-        data["validation_code"] = validation_code
-        data["validation_expiry_date"] = validation_expiry_date
+        data["activation_code"] = activation_code
+        data["activation_expiry_date"] = activation_expiry_date
         data["active"] = False
 
         serializer = self.get_serializer(data=data)
@@ -32,31 +32,31 @@ class UserRegistrationView(generics.CreateAPIView[UserProfile]):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(
-            {validation_code: validation_code},
+            {activation_code: activation_code},
             status=status.HTTP_201_CREATED,
             headers=headers,
         )
 
 
-class UserValidationView(generics.UpdateAPIView[UserProfile]):
+class UserActivationView(generics.UpdateAPIView[UserProfile]):
     serializer_class = UserProfileSerializer
     queryset = UserProfile.objects.all()
 
     def update(self, request: Request, *args: Any, **kwargs: Any) -> Response:
-        validation_code = request.data.get("validation_code")
+        activation_code = request.data.get("activation_code")
         try:
             user_profile: UserProfile = UserProfile.objects.get(
-                validation_code=validation_code
+                activation_code=activation_code
             )
         except UserProfile.DoesNotExist:
             return Response(
-                {"error": "Validation code not found"},
+                {"error": "Activation code not found"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        if user_profile.validation_expiry_date < timezone.now():
+        if user_profile.activation_expiry_date < timezone.now():
             return Response(
-                {"error": "Validation code expired"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": "Activation code expired"}, status=status.HTTP_400_BAD_REQUEST
             )
 
         user_profile.active = True

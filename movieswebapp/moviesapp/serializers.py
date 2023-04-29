@@ -205,8 +205,8 @@ class UserProfileSerializer(serializers.ModelSerializer[UserProfile]):
             "location",
             "birthday",
             "gender",
-            "validation_code",
-            "validation_expiry_date",
+            "activation_code",
+            "activation_expiry_date",
             "active",
         )
 

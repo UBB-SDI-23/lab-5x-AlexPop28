@@ -67,8 +67,8 @@ class UserProfile(models.Model):
         max_length=10,
         choices=(("male", "Male"), ("female", "Female"), ("other", "Other")),
     )
-    validation_code = models.CharField(max_length=36)
-    validation_expiry_date = models.DateTimeField()
+    activation_code = models.CharField(max_length=36)
+    activation_expiry_date = models.DateTimeField()
     active = models.BooleanField()
 
     def __str__(self) -> str:

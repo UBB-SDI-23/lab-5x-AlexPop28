@@ -32,7 +32,7 @@ class UserRegistrationView(generics.CreateAPIView[UserProfile]):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(
-            {activation_code: activation_code},
+            {"activation_code": activation_code},
             status=status.HTTP_201_CREATED,
             headers=headers,
         )
@@ -57,6 +57,11 @@ class UserActivationView(generics.UpdateAPIView[UserProfile]):
         if user_profile.activation_expiry_date < timezone.now():
             return Response(
                 {"error": "Activation code expired"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if user_profile.active:
+            return Response(
+                {"success": "Account already active"}, status=status.HTTP_200_OK
             )
 
         user_profile.active = True

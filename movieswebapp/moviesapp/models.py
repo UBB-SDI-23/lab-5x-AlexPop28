@@ -10,6 +10,7 @@ class Person(models.Model):
     date_of_birth = models.DateField()
     birthplace = models.CharField(max_length=100)
     height_in_cm = models.IntegerField()
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.name
@@ -36,6 +37,7 @@ class Movie(models.Model):
     length_in_minutes = models.IntegerField()
     director = models.ForeignKey(Director, on_delete=models.CASCADE)
     actors = models.ManyToManyField(Actor, through="ActorMovie")
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["name", "id"]
@@ -51,6 +53,7 @@ class ActorMovie(models.Model):
     screen_time_in_minutes = models.IntegerField()
     salary_in_usd = models.IntegerField()
     character_name = models.CharField(max_length=100)
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (("actor", "movie"),)

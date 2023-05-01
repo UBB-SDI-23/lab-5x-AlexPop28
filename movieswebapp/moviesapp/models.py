@@ -63,7 +63,9 @@ class ActorMovie(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    username = models.CharField(max_length=150)
+    username = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="profile", to_field="username"
+    )
     bio = models.TextField(max_length=500)
     location = models.CharField(max_length=100)
     birthday = models.DateField(null=True, blank=True)

@@ -243,3 +243,26 @@ class UserProfileSerializer(serializers.ModelSerializer[UserProfile]):
         user = User.objects.create_user(**user_data)
         user_profile = UserProfile.objects.create(user=user, **validated_data)
         return user_profile
+
+
+class UserProfileDetailSerializer(serializers.ModelSerializer[UserProfile]):
+    username = serializers.SerializerMethodField()
+    movie_count = serializers.IntegerField()
+    actor_count = serializers.IntegerField()
+    director_count = serializers.IntegerField()
+
+    def get_username(self, user_profile: UserProfile) -> str:
+        return user_profile.user_id  # type: ignore
+
+    class Meta:
+        model = UserProfile
+        fields = (
+            "username",
+            "bio",
+            "location",
+            "birthday",
+            "gender",
+            "movie_count",
+            "actor_count",
+            "director_count",
+        )

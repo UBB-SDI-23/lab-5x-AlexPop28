@@ -12,6 +12,7 @@ from movieswebapp.moviesapp.views.authentication import (
     UserActivationView,
     UserRegistrationView,
 )
+from movieswebapp.moviesapp.views.users import UserDetail
 
 router = routers.SimpleRouter()
 router.register(
@@ -59,4 +60,5 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("register/", UserRegistrationView.as_view(), name="register"),
     path("activate/", UserActivationView.as_view(), name="activate-user"),
+    path("users/<str:user_id>", UserDetail.as_view()),
 ] + router.urls

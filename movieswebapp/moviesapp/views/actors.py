@@ -2,6 +2,7 @@ from typing import Any
 
 from django.db.models import F, Sum
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
@@ -52,6 +53,7 @@ class ActorDetail(generics.RetrieveUpdateDestroyAPIView[Actor]):
 
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class ActorsOrderedByTotalIncome(generics.ListAPIView[Actor]):

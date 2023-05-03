@@ -3,6 +3,7 @@ from typing import Any
 from django.db.models import F, Max, QuerySet
 from django.db.models.functions import ExtractYear
 from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
@@ -68,6 +69,7 @@ class DirectorDetail(generics.RetrieveUpdateDestroyAPIView[Director]):
 
     queryset = Director.objects.all()
     serializer_class = SingleDirectorSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class DirectorsOrderedByLatestMovie(generics.ListAPIView[Director]):
@@ -81,6 +83,7 @@ class DirectorsOrderedByLatestMovie(generics.ListAPIView[Director]):
 class DirectorAddMovies(generics.UpdateAPIView[Movie]):
     queryset = Movie.objects.all()
     serializer_class = MovieIdsSerializer
+    permission_classes = [IsAuthenticated]
 
     def update(
         self, request: Request, *args: Any, **kwargs: dict[str, Any]

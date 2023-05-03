@@ -4,6 +4,7 @@ from django.db.models import Avg, QuerySet
 from django.db.models.functions import ExtractYear
 from rest_framework import generics, mixins, status, viewsets
 from rest_framework.generics import get_object_or_404
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
@@ -27,6 +28,7 @@ class MovieList(generics.ListCreateAPIView[Movie]):
     """
 
     pagination_class = CustomPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self) -> QuerySet[Movie]:
         """
@@ -67,6 +69,7 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView[Movie]):
     """
 
     queryset = Movie.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self) -> type[MovieSerializer | SingleMovieSerializer]:
         if self.request.method == "PUT":
@@ -93,6 +96,7 @@ class ActorMovieViewSet(
     serializer_class = ActorMovieSerializer
     queryset = ActorMovie.objects.all()
     pagination_class = CustomPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     lookup_field = "actor_id"
 

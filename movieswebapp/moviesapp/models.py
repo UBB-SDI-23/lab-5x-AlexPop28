@@ -72,6 +72,15 @@ class UserProfile(models.Model):
         max_length=10,
         choices=(("male", "Male"), ("female", "Female"), ("other", "Other")),
     )
+    marital_status = models.CharField(
+        max_length=20,
+        choices=(
+            ("Single", "single"),
+            ("Married", "married"),
+            ("Divorced", "divorced"),
+            ("Widowed", "widowed"),
+        ),
+    )
     activation_code = models.CharField(max_length=36)
     activation_expiry_date = models.DateTimeField()
     active = models.BooleanField()

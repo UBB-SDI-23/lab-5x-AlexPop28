@@ -6,6 +6,7 @@ from rest_framework import generics, mixins, status, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.serializers import BaseSerializer
 from rest_framework.settings import api_settings
 
 from movieswebapp.moviesapp.models import ActorMovie, Movie
@@ -25,7 +26,6 @@ class MovieList(generics.ListCreateAPIView[Movie]):
     List all Movies or create a new Movie.
     """
 
-    serializer_class = MovieSerializerWithActorCount
     pagination_class = CustomPagination
 
     def get_queryset(self) -> QuerySet[Movie]:
@@ -38,6 +38,27 @@ class MovieList(generics.ListCreateAPIView[Movie]):
         if min_rating is not None:
             queryset = queryset.filter(rating__gte=min_rating)
         return queryset
+
+    def get_serializer_class(
+        self,
+    ) -> type[MovieSerializer | MovieSerializerWithActorCount]:
+        if self.request.method == "GET":
+            return MovieSerializerWithActorCount
+        return MovieSerializer
+
+    def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        data = request.data.copy()
+        data["added_by_id"] = self.request.user.id
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
+    def perform_create(self, serializer: BaseSerializer[Movie]) -> None:
+        serializer.save(added_by=self.request.user)
 
 
 class MovieDetail(generics.RetrieveUpdateDestroyAPIView[Movie]):
@@ -86,10 +107,11 @@ class ActorMovieViewSet(
                 status=status.HTTP_400_BAD_REQUEST,
             )
         data["movie"] = int(movie_id)
+        data["added_by_id"] = request.user.id
 
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        serializer.save(added_by=request.user)
         headers = ActorMovieViewSet.get_success_headers(serializer.data)
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers

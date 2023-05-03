@@ -30,6 +30,7 @@ class MovieSerializer(serializers.ModelSerializer[Movie]):
             "release_date",
             "length_in_minutes",
             "director",
+            "added_by_id",
         )
 
 
@@ -79,6 +80,7 @@ class DirectorSerializer(serializers.ModelSerializer[Director]):
             "date_of_birth",
             "birthplace",
             "height_in_cm",
+            "added_by_id",
         )
 
 
@@ -145,6 +147,7 @@ class ActorSerializer(serializers.ModelSerializer[Actor]):
             "date_of_birth",
             "birthplace",
             "height_in_cm",
+            "added_by_id",
         )
 
 

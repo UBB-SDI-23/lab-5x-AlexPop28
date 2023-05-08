@@ -5,8 +5,14 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from movieswebapp.moviesapp import views
+from movieswebapp.moviesapp.views.authentication import (
+    UserActivationView,
+    UserRegistrationView,
+)
+from movieswebapp.moviesapp.views.users import UserDetail
 
 router = routers.SimpleRouter()
 router.register(
@@ -50,4 +56,9 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("register/", UserRegistrationView.as_view(), name="register"),
+    path("activate/", UserActivationView.as_view(), name="activate-user"),
+    path("users/<str:user_id>", UserDetail.as_view()),
 ] + router.urls

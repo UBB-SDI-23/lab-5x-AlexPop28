@@ -17,3 +17,5 @@ dependencies:
   - python-dotenv
   - faker
   - gunicorn
+  - pip:
+    - djangorestframework-simplejwt

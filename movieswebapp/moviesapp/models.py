@@ -1,3 +1,6 @@
+from typing import cast
+
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -7,6 +10,7 @@ class Person(models.Model):
     date_of_birth = models.DateField()
     birthplace = models.CharField(max_length=100)
     height_in_cm = models.IntegerField()
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.name
@@ -33,6 +37,7 @@ class Movie(models.Model):
     length_in_minutes = models.IntegerField()
     director = models.ForeignKey(Director, on_delete=models.CASCADE)
     actors = models.ManyToManyField(Actor, through="ActorMovie")
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["name", "id"]
@@ -48,8 +53,37 @@ class ActorMovie(models.Model):
     screen_time_in_minutes = models.IntegerField()
     salary_in_usd = models.IntegerField()
     character_name = models.CharField(max_length=100)
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (("actor", "movie"),)
         ordering = ["id"]
         indexes = [models.Index(fields=["id"])]
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="profile", to_field="username"
+    )
+    bio = models.TextField(max_length=500)
+    location = models.CharField(max_length=100)
+    birthday = models.DateField(null=True, blank=True)
+    gender = models.CharField(
+        max_length=10,
+        choices=(("male", "Male"), ("female", "Female"), ("other", "Other")),
+    )
+    marital_status = models.CharField(
+        max_length=20,
+        choices=(
+            ("Single", "single"),
+            ("Married", "married"),
+            ("Divorced", "divorced"),
+            ("Widowed", "widowed"),
+        ),
+    )
+    activation_code = models.CharField(max_length=36)
+    activation_expiry_date = models.DateTimeField()
+    active = models.BooleanField()
+
+    def __str__(self) -> str:
+        return cast(str, self.user.username)

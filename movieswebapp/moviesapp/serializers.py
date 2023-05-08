@@ -1,10 +1,12 @@
 import datetime
-from typing import cast
+from collections import OrderedDict
+from typing import Any, cast
 
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.utils.serializer_helpers import ReturnDict
 
-from .models import Actor, ActorMovie, Director, Movie
+from .models import Actor, ActorMovie, Director, Movie, UserProfile
 from .validations import check_date_in_the_past
 
 
@@ -28,18 +30,26 @@ class MovieSerializer(serializers.ModelSerializer[Movie]):
             "release_date",
             "length_in_minutes",
             "director",
+            "added_by_id",
         )
 
 
 class MovieSerializerWithActorCount(MovieSerializer):
     actor_count = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
 
     def get_actor_count(self, movie: Movie) -> int:
         return ActorMovie.objects.filter(movie=movie.id).count()  # type: ignore
 
+    def get_username(self, movie: Movie) -> str:
+        return cast(str, movie.added_by.username)
+
     class Meta:
         model = Movie
-        fields = MovieSerializer.Meta.fields + ("actor_count",)
+        fields = MovieSerializer.Meta.fields + (
+            "actor_count",
+            "username",
+        )
 
 
 class MovieSerializerWithAverageAge(MovieSerializer):
@@ -70,6 +80,7 @@ class DirectorSerializer(serializers.ModelSerializer[Director]):
             "date_of_birth",
             "birthplace",
             "height_in_cm",
+            "added_by_id",
         )
 
 
@@ -100,13 +111,20 @@ class DirectorSerializerWithLastReleaseDate(DirectorSerializer):
 
 class DirectorSerializerWithMovieCount(DirectorSerializer):
     movie_count = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
 
     def get_movie_count(self, director: Director) -> int:
         return Movie.objects.filter(director=director.id).count()  # type: ignore
 
+    def get_username(self, director: Director) -> str:
+        return cast(str, director.added_by.username)
+
     class Meta:
         model = Director
-        fields = DirectorSerializer.Meta.fields + ("movie_count",)
+        fields = DirectorSerializer.Meta.fields + (
+            "movie_count",
+            "username",
+        )
 
 
 class ActorSerializer(serializers.ModelSerializer[Actor]):
@@ -129,18 +147,26 @@ class ActorSerializer(serializers.ModelSerializer[Actor]):
             "date_of_birth",
             "birthplace",
             "height_in_cm",
+            "added_by_id",
         )
 
 
 class ActorSerializerWithMovieCount(ActorSerializer):
     movie_count = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
 
     def get_movie_count(self, actor: Actor) -> int:
         return ActorMovie.objects.filter(actor=actor.id).count()  # type: ignore
 
+    def get_username(self, actor: Actor) -> str:
+        return cast(str, actor.added_by.username)
+
     class Meta:
         model = Actor
-        fields = ActorSerializer.Meta.fields + ("movie_count",)
+        fields = ActorSerializer.Meta.fields + (
+            "movie_count",
+            "username",
+        )
 
 
 class ActorSerializerWithTotalIncome(ActorSerializer):
@@ -170,14 +196,78 @@ class ActorMovieSerializer(serializers.ModelSerializer[ActorMovie]):
 
 class ActorMovieSerializerWithActorName(ActorMovieSerializer):
     actor_name = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
 
     def get_actor_name(self, actor_movie: ActorMovie) -> str:
         return cast(str, actor_movie.actor.name)
 
+    def get_username(self, actor_movie: ActorMovie) -> str:
+        return cast(str, actor_movie.added_by.username)
+
     class Meta:
         model = ActorMovie
-        fields = ActorMovieSerializer.Meta.fields + ("actor_name",)
+        fields = ActorMovieSerializer.Meta.fields + (
+            "actor_name",
+            "username",
+        )
 
 
 class MovieIdsSerializer(serializers.Serializer[list[int]]):
     movie_ids = serializers.ListField(child=serializers.IntegerField())
+
+
+class UserSerializer(serializers.ModelSerializer[User]):
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "password",
+        )
+
+
+class UserProfileSerializer(serializers.ModelSerializer[UserProfile]):
+    user = UserSerializer()
+
+    class Meta:
+        model = UserProfile
+        fields = (
+            "user",
+            "bio",
+            "location",
+            "birthday",
+            "gender",
+            "marital_status",
+            "activation_code",
+            "activation_expiry_date",
+            "active",
+        )
+
+    def create(self, validated_data: OrderedDict[str, Any]) -> UserProfile:
+        user_data = validated_data.pop("user")
+        user = User.objects.create_user(**user_data)
+        user_profile = UserProfile.objects.create(user=user, **validated_data)
+        return user_profile
+
+
+class UserProfileDetailSerializer(serializers.ModelSerializer[UserProfile]):
+    username = serializers.SerializerMethodField()
+    movie_count = serializers.IntegerField()
+    actor_count = serializers.IntegerField()
+    director_count = serializers.IntegerField()
+
+    def get_username(self, user_profile: UserProfile) -> str:
+        return user_profile.user_id  # type: ignore
+
+    class Meta:
+        model = UserProfile
+        fields = (
+            "username",
+            "bio",
+            "location",
+            "birthday",
+            "gender",
+            "marital_status",
+            "movie_count",
+            "actor_count",
+            "director_count",
+        )

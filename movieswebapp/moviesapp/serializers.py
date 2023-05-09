@@ -271,3 +271,17 @@ class UserProfileDetailSerializer(serializers.ModelSerializer[UserProfile]):
             "actor_count",
             "director_count",
         )
+
+
+class UsernameAndRoleSerializer(serializers.ModelSerializer[UserProfile]):
+    username = serializers.SerializerMethodField()
+
+    def get_username(self, user_profile: UserProfile) -> str:
+        return user_profile.user_id  # type: ignore
+
+    class Meta:
+        model = UserProfile
+        fields = (
+            "username",
+            "role",
+        )

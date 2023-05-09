@@ -84,6 +84,15 @@ class UserProfile(models.Model):
     activation_code = models.CharField(max_length=36)
     activation_expiry_date = models.DateTimeField()
     active = models.BooleanField()
+    role = models.CharField(
+        max_length=10,
+        choices=(
+            ("Regular", "regular"),
+            ("Moderator", "moderator"),
+            ("Admin", "admin"),
+        ),
+        default="regular",
+    )
 
     def __str__(self) -> str:
         return cast(str, self.user.username)

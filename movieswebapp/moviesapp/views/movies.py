@@ -11,6 +11,7 @@ from rest_framework.serializers import BaseSerializer
 from rest_framework.settings import api_settings
 
 from movieswebapp.moviesapp.models import ActorMovie, Movie
+from movieswebapp.moviesapp.permissions import HasEditPermissionOrReadOnly
 from movieswebapp.moviesapp.serializers import (
     ActorMovieSerializer,
     ActorMovieSerializerWithActorName,
@@ -69,7 +70,7 @@ class MovieDetail(generics.RetrieveUpdateDestroyAPIView[Movie]):
     """
 
     queryset = Movie.objects.all()
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, HasEditPermissionOrReadOnly]
 
     def get_serializer_class(self) -> type[MovieSerializer | SingleMovieSerializer]:
         if self.request.method == "PUT":
@@ -96,7 +97,7 @@ class ActorMovieViewSet(
     serializer_class = ActorMovieSerializer
     queryset = ActorMovie.objects.all()
     pagination_class = CustomPagination
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, HasEditPermissionOrReadOnly]
 
     lookup_field = "actor_id"
 

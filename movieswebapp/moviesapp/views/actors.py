@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 
 from movieswebapp.moviesapp.models import Actor
+from movieswebapp.moviesapp.permissions import HasEditPermissionOrReadOnly
 from movieswebapp.moviesapp.serializers import (
     ActorSerializer,
     ActorSerializerWithMovieCount,
@@ -23,6 +24,7 @@ class ActorList(generics.ListCreateAPIView[Actor]):
 
     queryset = Actor.objects.all()
     pagination_class = CustomPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(
         self,
@@ -53,7 +55,7 @@ class ActorDetail(generics.RetrieveUpdateDestroyAPIView[Actor]):
 
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, HasEditPermissionOrReadOnly]
 
 
 class ActorsOrderedByTotalIncome(generics.ListAPIView[Actor]):

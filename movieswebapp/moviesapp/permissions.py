@@ -25,7 +25,7 @@ class HasEditPermissionOrReadOnly(permissions.BasePermission):
         if not hasattr(user, "profile"):
             return False
 
-        if user.profile == "regular":  # type: ignore
+        if user.profile.role == "regular":  # type: ignore
             # Instance must have an attribute named `added_by`.
             return cast(bool, obj.added_by == request.user)
 

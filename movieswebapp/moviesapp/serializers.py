@@ -267,6 +267,7 @@ class UserProfileDetailSerializer(serializers.ModelSerializer[UserProfile]):
             "birthday",
             "gender",
             "marital_status",
+            "role",
             "movie_count",
             "actor_count",
             "director_count",

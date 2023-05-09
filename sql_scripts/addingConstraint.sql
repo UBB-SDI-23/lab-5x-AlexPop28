@@ -1,3 +1,4 @@
+ALTER TABLE public."movieswebapp_userprofile" ADD CONSTRAINT "movieswebapp_userprofile_username_id_cd77db92_uniq" UNIQUE (user_id);
 ALTER TABLE public."movieswebapp_actormovie" ADD CONSTRAINT "movieswebapp_actormovie_actor_id_movie_id_cf9f1b7e_uniq" UNIQUE (actor_id, movie_id);
 ALTER TABLE public."django_content_type" ADD CONSTRAINT "django_content_type_app_label_model_76bd3d3b_uniq" UNIQUE (app_label, model);
 ALTER TABLE public."auth_user_user_permissions" ADD CONSTRAINT "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq" UNIQUE (user_id, permission_id);
@@ -21,11 +22,9 @@ ALTER TABLE pg_catalog."pg_rewrite" ADD CONSTRAINT "pg_rewrite_rel_rulename_inde
 ALTER TABLE pg_catalog."pg_replication_origin" ADD CONSTRAINT "pg_replication_origin_roname_index" UNIQUE (roname);
 ALTER TABLE pg_catalog."pg_range" ADD CONSTRAINT "pg_range_rngmultitypid_index" UNIQUE (rngmultitypid);
 ALTER TABLE pg_catalog."pg_publication_rel" ADD CONSTRAINT "pg_publication_rel_prrelid_prpubid_index" UNIQUE (prrelid, prpubid);
-ALTER TABLE pg_catalog."pg_publication_namespace" ADD CONSTRAINT "pg_publication_namespace_pnnspid_pnpubid_index" UNIQUE (pnnspid, pnpubid);
 ALTER TABLE pg_catalog."pg_publication" ADD CONSTRAINT "pg_publication_pubname_index" UNIQUE (pubname);
 ALTER TABLE pg_catalog."pg_proc" ADD CONSTRAINT "pg_proc_proname_args_nsp_index" UNIQUE (proname, proargtypes, pronamespace);
 ALTER TABLE pg_catalog."pg_policy" ADD CONSTRAINT "pg_policy_polrelid_polname_index" UNIQUE (polrelid, polname);
-ALTER TABLE pg_catalog."pg_parameter_acl" ADD CONSTRAINT "pg_parameter_acl_parname_index" UNIQUE (parname);
 ALTER TABLE pg_catalog."pg_opfamily" ADD CONSTRAINT "pg_opfamily_am_name_nsp_index" UNIQUE (opfmethod, opfname, opfnamespace);
 ALTER TABLE pg_catalog."pg_operator" ADD CONSTRAINT "pg_operator_oprname_l_r_n_index" UNIQUE (oprname, oprleft, oprright, oprnamespace);
 ALTER TABLE pg_catalog."pg_opclass" ADD CONSTRAINT "pg_opclass_am_name_nsp_index" UNIQUE (opcmethod, opcname, opcnamespace);
@@ -53,6 +52,7 @@ ALTER TABLE pg_catalog."pg_amproc" ADD CONSTRAINT "pg_amproc_fam_proc_index" UNI
 ALTER TABLE pg_catalog."pg_amop" ADD CONSTRAINT "pg_amop_opr_fam_index" UNIQUE (amopopr, amoppurpose, amopfamily);
 ALTER TABLE pg_catalog."pg_amop" ADD CONSTRAINT "pg_amop_fam_strat_index" UNIQUE (amopfamily, amoplefttype, amoprighttype, amopstrategy);
 ALTER TABLE pg_catalog."pg_am" ADD CONSTRAINT "pg_am_name_index" UNIQUE (amname);
+ALTER TABLE public."movieswebapp_userprofile" ADD CONSTRAINT "movieswebapp_userprofile_pkey" PRIMARY KEY (id);
 ALTER TABLE public."movieswebapp_movie" ADD CONSTRAINT "movieswebapp_movie_pkey" PRIMARY KEY (id);
 ALTER TABLE public."movieswebapp_director" ADD CONSTRAINT "movieswebapp_director_pkey" PRIMARY KEY (id);
 ALTER TABLE public."movieswebapp_actormovie" ADD CONSTRAINT "movieswebapp_actormovie_pkey" PRIMARY KEY (id);
@@ -79,7 +79,7 @@ ALTER TABLE pg_catalog."pg_transform" ADD CONSTRAINT "pg_transform_oid_index" PR
 ALTER TABLE pg_catalog."pg_tablespace" ADD CONSTRAINT "pg_tablespace_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_subscription_rel" ADD CONSTRAINT "pg_subscription_rel_srrelid_srsubid_index" PRIMARY KEY (srrelid, srsubid);
 ALTER TABLE pg_catalog."pg_subscription" ADD CONSTRAINT "pg_subscription_oid_index" PRIMARY KEY (oid);
-ALTER TABLE pg_catalog."pg_statistic_ext_data" ADD CONSTRAINT "pg_statistic_ext_data_stxoid_inh_index" PRIMARY KEY (stxoid, stxdinherit);
+ALTER TABLE pg_catalog."pg_statistic_ext_data" ADD CONSTRAINT "pg_statistic_ext_data_stxoid_index" PRIMARY KEY (stxoid);
 ALTER TABLE pg_catalog."pg_statistic_ext" ADD CONSTRAINT "pg_statistic_ext_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_statistic" ADD CONSTRAINT "pg_statistic_relid_att_inh_index" PRIMARY KEY (starelid, staattnum, stainherit);
 ALTER TABLE pg_catalog."pg_shseclabel" ADD CONSTRAINT "pg_shseclabel_object_index" PRIMARY KEY (objoid, classoid, provider);
@@ -90,12 +90,10 @@ ALTER TABLE pg_catalog."pg_rewrite" ADD CONSTRAINT "pg_rewrite_oid_index" PRIMAR
 ALTER TABLE pg_catalog."pg_replication_origin" ADD CONSTRAINT "pg_replication_origin_roiident_index" PRIMARY KEY (roident);
 ALTER TABLE pg_catalog."pg_range" ADD CONSTRAINT "pg_range_rngtypid_index" PRIMARY KEY (rngtypid);
 ALTER TABLE pg_catalog."pg_publication_rel" ADD CONSTRAINT "pg_publication_rel_oid_index" PRIMARY KEY (oid);
-ALTER TABLE pg_catalog."pg_publication_namespace" ADD CONSTRAINT "pg_publication_namespace_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_publication" ADD CONSTRAINT "pg_publication_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_proc" ADD CONSTRAINT "pg_proc_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_policy" ADD CONSTRAINT "pg_policy_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_partitioned_table" ADD CONSTRAINT "pg_partitioned_table_partrelid_index" PRIMARY KEY (partrelid);
-ALTER TABLE pg_catalog."pg_parameter_acl" ADD CONSTRAINT "pg_parameter_acl_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_opfamily" ADD CONSTRAINT "pg_opfamily_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_operator" ADD CONSTRAINT "pg_operator_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_opclass" ADD CONSTRAINT "pg_opclass_oid_index" PRIMARY KEY (oid);
@@ -130,9 +128,14 @@ ALTER TABLE pg_catalog."pg_amop" ADD CONSTRAINT "pg_amop_oid_index" PRIMARY KEY 
 ALTER TABLE pg_catalog."pg_am" ADD CONSTRAINT "pg_am_oid_index" PRIMARY KEY (oid);
 ALTER TABLE pg_catalog."pg_aggregate" ADD CONSTRAINT "pg_aggregate_fnoid_index" PRIMARY KEY (aggfnoid);
 ALTER TABLE public."django_admin_log" ADD CONSTRAINT "django_admin_log_action_flag_check" CHECK ((action_flag >= 0));
+ALTER TABLE public."movieswebapp_userprofile" ADD CONSTRAINT "movieswebapp_userprofile_user_id_df92a5ca_fk_auth_user_username" FOREIGN KEY (user_id) REFERENCES auth_user(username) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE public."movieswebapp_movie" ADD CONSTRAINT "movieswebapp_movie_director_id_a5a67a46_fk_moviesweb" FOREIGN KEY (director_id) REFERENCES movieswebapp_director(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE public."movieswebapp_movie" ADD CONSTRAINT "movieswebapp_movie_added_by_id_c00a1ef8_fk_auth_user_id" FOREIGN KEY (added_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE public."movieswebapp_director" ADD CONSTRAINT "movieswebapp_director_added_by_id_5f8503dd_fk_auth_user_id" FOREIGN KEY (added_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE public."movieswebapp_actormovie" ADD CONSTRAINT "movieswebapp_actormovie_added_by_id_32e6115c_fk_auth_user_id" FOREIGN KEY (added_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE public."movieswebapp_actormovie" ADD CONSTRAINT "movieswebapp_actormo_movie_id_10f0879f_fk_moviesweb" FOREIGN KEY (movie_id) REFERENCES movieswebapp_movie(id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE public."movieswebapp_actormovie" ADD CONSTRAINT "movieswebapp_actormo_actor_id_9add9887_fk_moviesweb" FOREIGN KEY (actor_id) REFERENCES movieswebapp_actor(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE public."movieswebapp_actor" ADD CONSTRAINT "movieswebapp_actor_added_by_id_47979bb8_fk_auth_user_id" FOREIGN KEY (added_by_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE public."django_admin_log" ADD CONSTRAINT "django_admin_log_user_id_c564eba6_fk_auth_user_id" FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE public."django_admin_log" ADD CONSTRAINT "django_admin_log_content_type_id_c4bce8eb_fk_django_co" FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE public."auth_user_user_permissions" ADD CONSTRAINT "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id" FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;

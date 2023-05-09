@@ -1,0 +1,1 @@
+TRUNCATE TABLE movieswebapp_director RESTART IDENTITY CASCADE;

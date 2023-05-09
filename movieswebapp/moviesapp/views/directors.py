@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 
 from movieswebapp.moviesapp.models import Director, Movie
+from movieswebapp.moviesapp.permissions import HasEditPermissionOrReadOnly
 from movieswebapp.moviesapp.serializers import (
     DirectorSerializer,
     DirectorSerializerWithLastReleaseDate,
@@ -26,6 +27,7 @@ class DirectorList(generics.ListCreateAPIView[Director]):
 
     queryset = Director.objects.all()
     pagination_class = CustomPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self) -> QuerySet[Director]:
         name = self.request.query_params.get("name")
@@ -43,12 +45,6 @@ class DirectorList(generics.ListCreateAPIView[Director]):
 
     def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         data = request.data.copy()
-        if self.request.user is None:
-            return Response(
-                {"error": "Please login for this action"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-
         data["added_by_id"] = self.request.user.id
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
@@ -69,7 +65,7 @@ class DirectorDetail(generics.RetrieveUpdateDestroyAPIView[Director]):
 
     queryset = Director.objects.all()
     serializer_class = SingleDirectorSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, HasEditPermissionOrReadOnly]
 
 
 class DirectorsOrderedByLatestMovie(generics.ListAPIView[Director]):

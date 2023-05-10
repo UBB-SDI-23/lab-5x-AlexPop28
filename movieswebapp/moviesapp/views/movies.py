@@ -162,9 +162,9 @@ class ActorMovieViewSet(
 
 class MovieTruncateTable(GenericSqlView):
     def __init__(self) -> None:
-        super().__init__("../../../sql_scripts/truncate_movies.sql")
+        super().__init__("sql_scripts/truncate_movies.sql")
 
 
 class MoviePopulateTable(GenericSqlView):
     def __init__(self) -> None:
-        super().__init__("../../../sql_scripts/gen_movies.sql")
+        super().__init__("sql_scripts/gen_movies.sql")

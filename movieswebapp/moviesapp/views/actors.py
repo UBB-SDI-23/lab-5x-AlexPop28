@@ -76,9 +76,9 @@ class ActorsOrderedByTotalIncome(generics.ListAPIView[Actor]):
 # TODO: Refactor without the hardcoded paths
 class ActorTruncateTable(GenericSqlView):
     def __init__(self) -> None:
-        super().__init__("../../../sql_scripts/truncate_actors.sql")
+        super().__init__("sql_scripts/truncate_actors.sql")
 
 
 class ActorPopulateTable(GenericSqlView):
     def __init__(self) -> None:
-        super().__init__("../../../sql_scripts/gen_actors.sql")
+        super().__init__("sql_scripts/gen_actors.sql")

@@ -95,9 +95,9 @@ class DirectorAddMovies(generics.UpdateAPIView[Movie]):
 
 class DirectorTruncateTable(GenericSqlView):
     def __init__(self) -> None:
-        super().__init__("../../../sql_scripts/truncate_directors.sql")
+        super().__init__("sql_scripts/truncate_directors.sql")
 
 
 class DirectorPopulateTable(GenericSqlView):
     def __init__(self) -> None:
-        super().__init__("../../../sql_scripts/gen_directors.sql")
+        super().__init__("sql_scripts/gen_directors.sql")

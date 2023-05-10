@@ -270,7 +270,7 @@ class UserProfileDetailSerializer(serializers.ModelSerializer[UserProfile]):
         )
 
 
-class UsernameAndRoleSerializer(serializers.ModelSerializer[UserProfile]):
+class UsernameRolePageSizeSerializer(serializers.ModelSerializer[UserProfile]):
     username = serializers.SerializerMethodField()
 
     def get_username(self, user_profile: UserProfile) -> str:
@@ -281,4 +281,5 @@ class UsernameAndRoleSerializer(serializers.ModelSerializer[UserProfile]):
         fields = (
             "username",
             "role",
+            "page_size",
         )

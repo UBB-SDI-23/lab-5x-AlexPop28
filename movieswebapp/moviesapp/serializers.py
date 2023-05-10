@@ -267,6 +267,7 @@ class UserProfileDetailSerializer(serializers.ModelSerializer[UserProfile]):
             "movie_count",
             "actor_count",
             "director_count",
+            "page_size",
         )
 
 

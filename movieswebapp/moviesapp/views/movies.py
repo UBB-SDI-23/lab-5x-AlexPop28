@@ -20,6 +20,7 @@ from movieswebapp.moviesapp.serializers import (
     MovieSerializerWithAverageAge,
     SingleMovieSerializer,
 )
+from movieswebapp.moviesapp.views.generics import GenericSqlView
 from movieswebapp.moviesapp.views.pagination import CustomPagination
 
 
@@ -157,3 +158,13 @@ class ActorMovieViewSet(
         self.check_object_permissions(self.request, actor_movie)
 
         return actor_movie
+
+
+class MovieTruncateTable(GenericSqlView):
+    def __init__(self) -> None:
+        super().__init__("sql_scripts/truncate_movies.sql")
+
+
+class MoviePopulateTable(GenericSqlView):
+    def __init__(self) -> None:
+        super().__init__("sql_scripts/gen_movies.sql")

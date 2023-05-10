@@ -87,9 +87,9 @@ class UserProfile(models.Model):
     role = models.CharField(
         max_length=10,
         choices=(
-            ("Regular", "regular"),
-            ("Moderator", "moderator"),
-            ("Admin", "admin"),
+            ("regular", "Regular"),
+            ("moderator", "Moderator"),
+            ("admin", "Admin"),
         ),
         default="regular",
     )

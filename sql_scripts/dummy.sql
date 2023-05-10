@@ -1,0 +1,1 @@
+SELECT * FROM movieswebapp_movie LIMIT 10;

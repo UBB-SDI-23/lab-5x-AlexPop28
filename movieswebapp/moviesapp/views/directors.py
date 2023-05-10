@@ -17,6 +17,7 @@ from movieswebapp.moviesapp.serializers import (
     MovieIdsSerializer,
     SingleDirectorSerializer,
 )
+from movieswebapp.moviesapp.views.generics import GenericSqlView
 from movieswebapp.moviesapp.views.pagination import CustomPagination
 
 
@@ -90,3 +91,13 @@ class DirectorAddMovies(generics.UpdateAPIView[Movie]):
         movie_ids: list[int] = serializer.validated_data["movie_ids"]
         Movie.objects.filter(director_id__in=movie_ids).update(director_id=director_id)
         return Response(status=status.HTTP_200_OK)
+
+
+class DirectorTruncateTable(GenericSqlView):
+    def __init__(self) -> None:
+        super().__init__("sql_scripts/truncate_directors.sql")
+
+
+class DirectorPopulateTable(GenericSqlView):
+    def __init__(self) -> None:
+        super().__init__("sql_scripts/gen_directors.sql")

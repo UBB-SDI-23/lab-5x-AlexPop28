@@ -17,4 +17,5 @@ class GenericSqlView(APIView):
     def post(self, request: Request) -> Response:
         self.check_permissions(request)
         run_sql_script(self.script_path)
+        run_sql_script("sql_scripts/post_gen.sql")
         return Response({"message": "SQL script executed successfully"})

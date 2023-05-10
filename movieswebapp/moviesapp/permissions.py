@@ -31,3 +31,18 @@ class HasEditPermissionOrReadOnly(permissions.BasePermission):
 
         # Moderators and admins can edit everything
         return True
+
+
+class IsAdminOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request: Request, view: APIView) -> bool:
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        user = request.user
+        if type(user) != User:
+            return False
+
+        if not hasattr(user, "profile"):
+            return False
+
+        return user.profile.role == "admin"  # type: ignore

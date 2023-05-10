@@ -8,10 +8,16 @@ from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from movieswebapp.moviesapp import views
+from movieswebapp.moviesapp.views.actors import ActorPopulateTable, ActorTruncateTable
 from movieswebapp.moviesapp.views.authentication import (
     UserActivationView,
     UserRegistrationView,
 )
+from movieswebapp.moviesapp.views.directors import (
+    DirectorPopulateTable,
+    DirectorTruncateTable,
+)
+from movieswebapp.moviesapp.views.movies import MoviePopulateTable, MovieTruncateTable
 from movieswebapp.moviesapp.views.users import UserDetail, UserList
 
 router = routers.SimpleRouter()
@@ -62,4 +68,10 @@ urlpatterns = [
     path("activate/", UserActivationView.as_view(), name="activate-user"),
     path("users/<str:user_id>/", UserDetail.as_view()),
     path("users/", UserList.as_view()),
+    path("admin/truncate_actors/", ActorTruncateTable.as_view()),
+    path("admin/populate_actors/", ActorPopulateTable.as_view()),
+    path("admin/truncate_directors/", DirectorTruncateTable.as_view()),
+    path("admin/populate_directors/", DirectorPopulateTable.as_view()),
+    path("admin/truncate_movies/", MovieTruncateTable.as_view()),
+    path("admin/populate_movies/", MoviePopulateTable.as_view()),
 ] + router.urls

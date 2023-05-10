@@ -14,6 +14,7 @@ from movieswebapp.moviesapp.serializers import (
     ActorSerializerWithMovieCount,
     ActorSerializerWithTotalIncome,
 )
+from movieswebapp.moviesapp.views.generics import GenericSqlView
 from movieswebapp.moviesapp.views.pagination import CustomPagination
 
 
@@ -70,3 +71,14 @@ class ActorsOrderedByTotalIncome(generics.ListAPIView[Actor]):
     )
     serializer_class = ActorSerializerWithTotalIncome
     pagination_class = CustomPagination
+
+
+# TODO: Refactor without the hardcoded paths
+class ActorTruncateTable(GenericSqlView):
+    def __init__(self) -> None:
+        super().__init__("../../../sql_scripts/truncate_actors.sql")
+
+
+class ActorPopulateTable(GenericSqlView):
+    def __init__(self) -> None:
+        super().__init__("../../../sql_scripts/gen_actors.sql")

@@ -2,6 +2,7 @@ from django.db.models import Count, QuerySet
 from rest_framework import generics
 
 from movieswebapp.moviesapp.models import UserProfile
+from movieswebapp.moviesapp.permissions import IsAdminOrReadOnly
 from movieswebapp.moviesapp.serializers import (
     UsernameAndRoleSerializer,
     UserProfileDetailSerializer,
@@ -16,6 +17,7 @@ class UserList(generics.ListAPIView[UserProfile]):
 
 
 class UserDetail(generics.RetrieveUpdateAPIView[UserProfile]):
+    permission_classes = [IsAdminOrReadOnly]
     lookup_field = "user_id"
 
     def get_serializer_class(

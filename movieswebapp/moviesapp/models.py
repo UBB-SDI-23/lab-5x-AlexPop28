@@ -93,6 +93,14 @@ class UserProfile(models.Model):
         ),
         default="regular",
     )
+    page_size = models.IntegerField(
+        choices=(
+            (10, 10),
+            (25, 25),
+            (100, 100),
+        ),
+        default=10,
+    )
 
     def __str__(self) -> str:
         return cast(str, self.user.username)

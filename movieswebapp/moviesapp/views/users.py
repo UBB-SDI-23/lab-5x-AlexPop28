@@ -4,7 +4,7 @@ from rest_framework import generics
 from movieswebapp.moviesapp.models import UserProfile
 from movieswebapp.moviesapp.permissions import IsAdminOrReadOnly
 from movieswebapp.moviesapp.serializers import (
-    UsernameAndRoleSerializer,
+    UsernameRolePageSizeSerializer,
     UserProfileDetailSerializer,
 )
 from movieswebapp.moviesapp.views.pagination import CustomPagination
@@ -12,7 +12,7 @@ from movieswebapp.moviesapp.views.pagination import CustomPagination
 
 class UserList(generics.ListAPIView[UserProfile]):
     queryset = UserProfile.objects.all()
-    serializer_class = UsernameAndRoleSerializer
+    serializer_class = UsernameRolePageSizeSerializer
     pagination_class = CustomPagination
 
 
@@ -22,10 +22,10 @@ class UserDetail(generics.RetrieveUpdateAPIView[UserProfile]):
 
     def get_serializer_class(
         self,
-    ) -> type[UserProfileDetailSerializer | UsernameAndRoleSerializer]:
+    ) -> type[UserProfileDetailSerializer | UsernameRolePageSizeSerializer]:
         if self.request.method == "GET":
             return UserProfileDetailSerializer
-        return UsernameAndRoleSerializer
+        return UsernameRolePageSizeSerializer
 
     def get_queryset(self) -> QuerySet[UserProfile]:
         queryset = UserProfile.objects.all()

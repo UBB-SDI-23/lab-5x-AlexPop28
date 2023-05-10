@@ -11,6 +11,11 @@ from .validations import check_date_in_the_past
 
 
 class MovieSerializer(serializers.ModelSerializer[Movie]):
+    username = serializers.SerializerMethodField()
+
+    def get_username(self, movie: Movie) -> str:
+        return cast(str, movie.added_by.username)
+
     def validate_rating(self, rating: float) -> float:
         if rating < 0 or rating > 10.0:
             raise serializers.ValidationError("Rating should be between 0 and 10.")
@@ -31,25 +36,19 @@ class MovieSerializer(serializers.ModelSerializer[Movie]):
             "length_in_minutes",
             "director",
             "added_by_id",
+            "username",
         )
 
 
 class MovieSerializerWithActorCount(MovieSerializer):
     actor_count = serializers.SerializerMethodField()
-    username = serializers.SerializerMethodField()
 
     def get_actor_count(self, movie: Movie) -> int:
         return ActorMovie.objects.filter(movie=movie.id).count()  # type: ignore
 
-    def get_username(self, movie: Movie) -> str:
-        return cast(str, movie.added_by.username)
-
     class Meta:
         model = Movie
-        fields = MovieSerializer.Meta.fields + (
-            "actor_count",
-            "username",
-        )
+        fields = MovieSerializer.Meta.fields + ("actor_count",)
 
 
 class MovieSerializerWithAverageAge(MovieSerializer):
@@ -61,6 +60,11 @@ class MovieSerializerWithAverageAge(MovieSerializer):
 
 
 class DirectorSerializer(serializers.ModelSerializer[Director]):
+    username = serializers.SerializerMethodField()
+
+    def get_username(self, director: Director) -> str:
+        return cast(str, director.added_by.username)
+
     def validate_height_in_cm(self, height_in_cm: int) -> int:
         if height_in_cm <= 0:
             raise serializers.ValidationError("Height should be positive.")
@@ -81,6 +85,7 @@ class DirectorSerializer(serializers.ModelSerializer[Director]):
             "birthplace",
             "height_in_cm",
             "added_by_id",
+            "username",
         )
 
 
@@ -111,23 +116,21 @@ class DirectorSerializerWithLastReleaseDate(DirectorSerializer):
 
 class DirectorSerializerWithMovieCount(DirectorSerializer):
     movie_count = serializers.SerializerMethodField()
-    username = serializers.SerializerMethodField()
 
     def get_movie_count(self, director: Director) -> int:
         return Movie.objects.filter(director=director.id).count()  # type: ignore
 
-    def get_username(self, director: Director) -> str:
-        return cast(str, director.added_by.username)
-
     class Meta:
         model = Director
-        fields = DirectorSerializer.Meta.fields + (
-            "movie_count",
-            "username",
-        )
+        fields = DirectorSerializer.Meta.fields + ("movie_count",)
 
 
 class ActorSerializer(serializers.ModelSerializer[Actor]):
+    username = serializers.SerializerMethodField()
+
+    def get_username(self, actor: Actor) -> str:
+        return cast(str, actor.added_by.username)
+
     def validate_height_in_cm(self, height_in_cm: int) -> int:
         if height_in_cm <= 0:
             raise serializers.ValidationError("Height should be positive.")
@@ -148,25 +151,19 @@ class ActorSerializer(serializers.ModelSerializer[Actor]):
             "birthplace",
             "height_in_cm",
             "added_by_id",
+            "username",
         )
 
 
 class ActorSerializerWithMovieCount(ActorSerializer):
     movie_count = serializers.SerializerMethodField()
-    username = serializers.SerializerMethodField()
 
     def get_movie_count(self, actor: Actor) -> int:
         return ActorMovie.objects.filter(actor=actor.id).count()  # type: ignore
 
-    def get_username(self, actor: Actor) -> str:
-        return cast(str, actor.added_by.username)
-
     class Meta:
         model = Actor
-        fields = ActorSerializer.Meta.fields + (
-            "movie_count",
-            "username",
-        )
+        fields = ActorSerializer.Meta.fields + ("movie_count",)
 
 
 class ActorSerializerWithTotalIncome(ActorSerializer):
@@ -178,6 +175,11 @@ class ActorSerializerWithTotalIncome(ActorSerializer):
 
 
 class ActorMovieSerializer(serializers.ModelSerializer[ActorMovie]):
+    username = serializers.SerializerMethodField()
+
+    def get_username(self, actor_movie: ActorMovie) -> str:
+        return cast(str, actor_movie.added_by.username)
+
     def validate_screen_time_in_minutes(self, screen_time_in_minutes: int) -> int:
         if screen_time_in_minutes <= 0:
             raise serializers.ValidationError("Screen time should be positive.")
@@ -191,25 +193,19 @@ class ActorMovieSerializer(serializers.ModelSerializer[ActorMovie]):
             "screen_time_in_minutes",
             "salary_in_usd",
             "character_name",
+            "username",
         )
 
 
 class ActorMovieSerializerWithActorName(ActorMovieSerializer):
     actor_name = serializers.SerializerMethodField()
-    username = serializers.SerializerMethodField()
 
     def get_actor_name(self, actor_movie: ActorMovie) -> str:
         return cast(str, actor_movie.actor.name)
 
-    def get_username(self, actor_movie: ActorMovie) -> str:
-        return cast(str, actor_movie.added_by.username)
-
     class Meta:
         model = ActorMovie
-        fields = ActorMovieSerializer.Meta.fields + (
-            "actor_name",
-            "username",
-        )
+        fields = ActorMovieSerializer.Meta.fields + ("actor_name",)
 
 
 class MovieIdsSerializer(serializers.Serializer[list[int]]):
